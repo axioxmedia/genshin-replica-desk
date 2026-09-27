@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="gold">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/brand/logo.png" type="image/png" />
+  <title>原神复刻编辑台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body class="aio-app axiox-shell">
+  <div class="bg-grid"></div>
+  <div class="floor"></div>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img class="mark" src="/brand/logo.png" width="44" height="44" alt="A|O" style="object-fit:cover" />
+        <div>
+          <h1 data-i18n="appTitle">原神复刻编辑台</h1>
+          <p data-i18n="appSubtitle">替换音乐、交互、模型与材质，导出可运行的 HTML 工程包</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="theme-switch" id="themeSwitch" data-on="gold" role="group">
+          <span class="theme-slider" aria-hidden="true"></span>
+          <button type="button" data-theme="gold" id="themeGold"><span data-i18n="themeGold">黑金</span></button>
+          <button type="button" data-theme="light" id="themeLight"><span data-i18n="themeLight">浅色</span></button>
+        </div>
+        <div class="lang-switch" id="uiLangSwitch">
+          <button type="button" data-ui-lang="zh">中文</button>
+          <button type="button" data-ui-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="steps" id="stepNav"></nav>
+    <section class="workspace">
+      <article class="wizard-card card on" id="stage0">
+        <div class="kicker">Step 01</div>
+        <h2 data-i18n="s0Title">准备工程</h2>
+        <p class="lead" data-i18n="s0Lead">已内置 alphardex/genshin-replica。命名本次衍生，然后按步骤替换资源。</p>
+        <label data-i18n="titleLabel">页面标题</label>
+        <input class="plain" id="pageTitle" type="text" value="原神启动" />
+        <label data-i18n="folderLabel">导出文件夹名</label>
+        <input class="plain" id="folderName" type="text" value="genshin-replica-export" />
+        <p class="notice" data-i18n="s0Notice">右侧书本按钮（ClickMe.png）会被永久移除：原项目里该控件无有效功能。未改任何资源直接导出时，将原样保留左下角 miHoYo 免责声明。</p>
+        <label class="remember"><input type="checkbox" id="remember" checked /> <span data-i18n="remember">记住本次选择</span></label>
+        <div class="actions">
+          <button class="primary" type="button" id="next0" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage1">
+        <div class="kicker">Step 02</div>
+        <h2 data-i18n="s1Title">音乐与音效</h2>
+        <p class="lead" data-i18n="s1Lead">替换 BGM 与三道过场音效。留空则使用原项目音频。</p>
+        <div class="slot-grid" id="audioSlots"></div>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="0" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="next1" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage2">
+        <div class="kicker">Step 03</div>
+        <h2 data-i18n="s2Title">界面与材质贴图</h2>
+        <p class="lead" data-i18n="s2Lead">Logo、进入条、元素进度、指针、天空盒与登录场景贴图。</p>
+        <div class="slot-grid" id="imageSlots"></div>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="1" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="next2" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage3">
+        <div class="kicker">Step 04</div>
+        <h2 data-i18n="s3Title">模型</h2>
+        <p class="lead" data-i18n="s3Lead">上传 GLB / glTF 以替换门、路、柱、桥、云与光柱。</p>
+        <div class="slot-grid" id="modelSlots"></div>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="2" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="next3" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage4">
+        <div class="kicker">Step 05</div>
+        <h2 data-i18n="s4Title">光照与材质参数</h2>
+        <p class="lead" data-i18n="s4Lead">雾、环境光、主光与天空渐变。右侧画面随参数即时刷新。</p>
+        <div class="look-split">
+          <div class="form-grid" id="sceneFields"></div>
+          <aside class="look-preview">
+            <div class="look-preview-label" data-i18n="livePreview">实时预览</div>
+            <div id="lookView" class="look-view"></div>
+          </aside>
+        </div>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="3" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="next4" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage5">
+        <div class="kicker">Step 06</div>
+        <h2 data-i18n="s5Title">本地状态玻璃条</h2>
+        <p class="lead" data-i18n="s5Lead">可选：在导出页左上角显示毛玻璃信息。三项默认关闭。</p>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="hudTime" /> <span><strong data-i18n="hudTime">系统时间</strong><br /><small data-i18n="hudTimeHint">本机当前时钟，每秒刷新</small></span></label>
+          <label class="check"><input type="checkbox" id="hudRegion" /> <span><strong data-i18n="hudRegion">地区</strong><br /><small data-i18n="hudRegionHint">时区与浏览器语言区域</small></span></label>
+          <label class="check"><input type="checkbox" id="hudWeather" /> <span><strong data-i18n="hudWeather">天气</strong><br /><small data-i18n="hudWeatherHint">Open-Meteo 当前天气（需联网，可请求定位）</small></span></label>
+        </div>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="4" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="next5" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card card" id="stage6">
+        <div class="kicker">Step 07</div>
+        <h2 data-i18n="s6Title">声明并导出 HTML</h2>
+        <p class="lead" data-i18n="s6Lead">未编辑任何内容时强制保留原免责声明。若改写了资源，可选择自定义声明文本。</p>
+        <label data-i18n="discMode">免责声明</label>
+        <div class="checks">
+          <label class="check"><input type="radio" name="discMode" value="original" checked /> <span data-i18n="discOriginal">保留原项目左下角声明（推荐，未编辑时强制）</span></label>
+          <label class="check"><input type="radio" name="discMode" value="custom" /> <span data-i18n="discCustom">使用下面的自定义文本</span></label>
+        </div>
+        <textarea id="disclaimerText"></textarea>
+        <div class="actions">
+          <button class="ghost" type="button" data-back="5" data-i18n="back">上一步</button>
+          <button class="primary" type="button" id="exportBtn" data-i18n="export">导出 HTML Zip</button>
+        </div>
+        <p class="hint" id="exportHint"></p>
+      </article>
+    </section>
+  </main>
+  <div class="modal-bg" id="modelModal" hidden>
+    <div class="modal modal-wide">
+      <div class="kicker">GLB</div>
+      <h3 id="modelModalTitle">Model</h3>
+      <div id="modelView" class="model-view"></div>
+      <div class="modal-actions">
+        <button class="ghost" type="button" id="modelModalClose" data-i18n="close">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="exportModal" hidden>
+    <div class="modal">
+      <div class="kicker">Export</div>
+      <h3 data-i18n="exportWhere">选择导出位置</h3>
+      <p class="lead" data-i18n="exportWhereLead">选择本机目录。确认后会在该目录写入 zip，并同时提供浏览器下载。</p>
+      <label data-i18n="exportDirLabel">导出目录</label>
+      <div class="field-row split">
+        <input class="plain" id="exportDir" type="text" placeholder="D:\Projects" />
+        <button class="soft" type="button" id="browseDir" data-i18n="browse">浏览</button>
+      </div>
+      <label data-i18n="folderLabel">导出文件夹名</label>
+      <input class="plain" id="exportFolderName" type="text" value="genshin-replica-export" />
+      <p class="hint" id="exportModalHint"></p>
+      <div class="modal-actions">
+        <button class="ghost" type="button" id="exportCancel" data-i18n="cancel">取消</button>
+        <button class="primary" type="button" id="exportConfirm" data-i18n="exportConfirm">确认导出</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="log-dock" id="logDock"></div>
+  <footer class="app-version" id="appVersion">v1.3.4</footer>
+  <script type="module" src="/assets/preview.js"></script>
+  <script defer src="/assets/app.js"></script>
+</body>
+</html>
