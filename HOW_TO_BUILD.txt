@@ -1,0 +1,14 @@
+Genshin Replica Desk — local Windows build
+
+1. Install Python 3.11 or 3.12 from python.org. Check "Add python.exe to PATH".
+2. Unzip this folder.
+3. Double-click build_exe.bat.
+4. Result: dist\GenshinReplicaDesk.exe
+
+Alternate:
+  powershell -ExecutionPolicy Bypass -File .\build_exe.ps1
+
+Source run without an EXE:
+  start.bat
+  or: python app.py
+  or: python app.py --web
